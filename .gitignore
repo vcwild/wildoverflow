@@ -153,3 +153,4 @@ Thumbs.db
 /tests
 *.cpython*
 *.pyc
+.env
