@@ -151,3 +151,5 @@ Thumbs.db
 .prof
 
 /tests
+*.cpython*
+*.pyc
