@@ -23,12 +23,12 @@ class TwitchBot(commands.Bot):
 			return
 		return await self.handle_commands(message)
 
-	@commands.command(name='42')
+	@commands.command(name='42', aliases=['quarentaedois'])
 	async def message_42(self, ctx):
 		msg = os.environ['MSG_42']
 		await ctx.send(msg.format(ctx.author.name))
 
-	@commands.command(name='github')
+	@commands.command(name='github', aliases=['gh'])
 	async def github(self, ctx):
 		msg = os.environ['MSG_GITHUB']
 		await ctx.send(msg.format(ctx.author.name))
@@ -56,3 +56,8 @@ class TwitchBot(commands.Bot):
 	@commands.command(name='sh')
 	async def sh_so(self, ctx):
 		return
+
+	@commands.command(name='hub')
+	async def hub(self, ctx):
+		msg = "Conheça o HUB da galera: https://discord.gg/RMDSHVkDmE"
+		await ctx.send(msg)
