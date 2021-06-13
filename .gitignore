@@ -154,3 +154,7 @@ Thumbs.db
 *.cpython*
 *.pyc
 .env
+
+# Other
+/twitch_bot/**/greeting_messages*
+.env.swp
