@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  redis-master:
+    image: 'bitnami/redis:latest'
+    ports:
+      - '6379:6379'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    #   - REDIS_PASSWORD=redispass
+    # networks:
+    #   - app-tier
+    # myapp:
+    #   image: 'YOUR_APPLICATION_IMAGE'
+    #   networks:
+    #     - app-tier
+
+# networks:
+#   app-tier:
+#     driver: bridge
