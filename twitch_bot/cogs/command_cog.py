@@ -49,7 +49,7 @@ class TwitchBot(commands.Bot):
 					chatters=await self.get_chatters(channel)
 				)
 
-		await self.get_channel(self.channels[0]).send(os.environ['DEFAULT_GREETING'])
+		await self.get_channel(self.channels[0]).send(os.environ['MSG_DEFAULT_GREETING'])
 		print(f'{self.nick} is ready!')
 
 	async def event_message(self, message):
