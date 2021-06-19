@@ -117,7 +117,7 @@ class TwitchBot(commands.Bot):
 		number = random.randint(0, 6)
 		msg = "/me {} jogou {}!"
 
-		if number == 0 or number:
+		if number == 0:
 			msg = "/me {} jogou {}! mas pera aí, existe número 0 em um dado? Kappa"
 
 		await ctx.send(msg.format(ctx.author.name, number))
