@@ -49,7 +49,7 @@ class TwitchBot(commands.Bot):
 					chatters=await self.get_chatters(channel)
 				)
 
-		await self.get_channel(self.channels[0]).send("Bom dia chat TehePelo")
+		await self.get_channel(self.channels[0]).send(os.environ['DEFAULT_GREETING'])
 		print(f'{self.nick} is ready!')
 
 	async def event_message(self, message):
@@ -80,10 +80,11 @@ class TwitchBot(commands.Bot):
 		if self.interactions:
 			await greetings.say_hello(user_name, channel)
 
-	# @commands.command(name='42', aliases=['quarentaedois', 'quarenta e dois'])
-	# async def message_42(self, ctx):
-	# 	msg = os.environ['MSG_42']
-	# 	await ctx.send(msg.format(ctx.author.name))
+	@commands.command(name='42', aliases=['quarentaedois', 'quarenta e dois'])
+	async def message_42(self, ctx):
+		if ctx.channel.name == 'vcwild':
+			msg = os.environ['MSG_42']
+			await ctx.send(msg.format(ctx.author.name))
 
 	@commands.command(name='flush', aliases=['avc', 'flushdb', 'limpar', 'clean'])
 	async def flush_database(self, ctx):
@@ -95,11 +96,9 @@ class TwitchBot(commands.Bot):
 			# self.cache.pop(ctx.channel.name)
 			self.cache[ctx.channel.name] = set(self.channels)
 
-			return await ctx.send(f"{ctx.author.name} limpou a base de dados do canal! SeemsGood")
+			return await ctx.send(os.environ['MSG_FLUSH_DB'].format(ctx.author.name))
 
-		await ctx.send("{} foi mal, mas você não pode fazer isso! Kappa".format(
-			ctx.author.name
-		))
+		await ctx.send(os.environ['MSG_FLUSH_DB_FAIL'].format(ctx.author.name))
 
 	@commands.command(name="commands",
 					  aliases=['comandos', 'comands', 'comando', 'ajuda'])
@@ -107,18 +106,17 @@ class TwitchBot(commands.Bot):
 		if ctx.author.is_mod:
 			return await ctx.send(
 				"{}, meus comandos são: ".format(ctx.author.name) +\
-					str(list(self.commands.keys()))[1:-1])
-		await ctx.send("{}, mas e quem falou que eu sou um bot? SeriousSloth".format(
-			ctx.author.name
-		))
+					str(list(self.commands.keys()))[1:-1]
+			)
+		await ctx.send(os.environ['MSG_LIST_COMMANDS_FAIL'].format(ctx.author.name))
 
-	@commands.command(name="dado", aliases=['dados'])
-	async def jogar_dados(self, ctx):
+	@commands.command(name="dado", aliases=['dados', 'dice'])
+	async def play_dice(self, ctx):
 		number = random.randint(0, 6)
-		msg = "/me {} jogou {}!"
+		msg = os.environ['MSG_DICE']
 
 		if number == 0:
-			msg = "/me {} jogou {}! mas pera aí, existe número 0 em um dado? Kappa"
+			msg = os.environ['MSG_DICE_ZERO']
 
 		await ctx.send(msg.format(ctx.author.name, number))
 
@@ -165,25 +163,25 @@ class TwitchBot(commands.Bot):
 
 	@commands.command(name='davi', aliases=['daviprm', 'daviprm_'])
 	async def spotted(self, ctx):
-		msg = "/me 👌😳😳😳😳😳😳👋🤗🤗😎👉 https://www.twitch.tv/daviprm_".format(ctx.author.name)
+		msg = os.environ['MSG_DAVIPRM'].format(ctx.author.name)
 		await ctx.send(msg)
 
 	@commands.command(name='cafemaker')
 	async def cafe_maker(self, ctx):
-		msg = "/me O Café Maker é um evento do Kaduzius onde ele entrevista makers mostrando suas invenções, os eventos ocorrem quinzenalmente aos sábados no canal do Kadu: https://www.twitch.tv/kaduzius"
+		msg = os.environ['MSG_CAFEMAKER']
 		await ctx.send(msg)
 
 	@commands.command(name='eurotrip')
 	async def eurotrip(self, ctx):
-		msg = "/me A Euro Trip é um evento do Emidio onde ele entrevista devs que trabalham na Europa, os papos são geralmente sobre experiências, carreira e cultura. Siga o canal do Emidio para ficar sabendo: https://www.twitch.tv/em1dio"
+		msg = os.environ['MSG_EUROTRIP']
 		await ctx.send(msg)
 
 	@commands.command(name='maker')
 	async def maker(self, ctx):
-		msg = '/me POOOOH NEGO TA DANDO MOLINHO!! KomodoHype  KomodoHype  KomodoHype  A stream em que o maluco te da salve, dando sugada ( KappaPride ) com zoom na cara enquanto as lolly TehePelo dão "oi" PowerUpL OhMyDog PowerUpR , cê não é nem louco de perder isso, corre lá!! TAKE MY LINK GivePLZ https://www.twitch.tv/2lmaker'
+		msg = os.environ['MSG_MAKER']
 		await ctx.send(msg)
 
 	@commands.command(name='jp', aliases=['jp_amis'])
 	async def jp_amis(self, ctx):
-		msg = "/me Se quiser conhecer uma stream math.random() * 1000000, segue lá: https://www.twitch.tv/jp_amis"
+		msg = os.environ['MSG_JP_AMIS']
 		await ctx.send(msg)
