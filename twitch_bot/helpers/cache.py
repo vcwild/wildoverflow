@@ -24,11 +24,11 @@ def send_from_redis_to_cache(cache, conn):
 		for m in conn.smembers(key):
 			cache[key].add(m.decode('utf-8'))
 
-def send_from_cache_to_redis(cache, conn):
+def send_from_cache_to_redis(cache, conn, time: timedelta):
 	with conn.pipeline() as pipe:
 		for set_id, set_value in cache.items():
 			pipe.sadd(set_id, *set_value)
-			pipe.expire(set_id, timedelta(weeks=1))
+			pipe.expire(set_id, time)
 		pipe.execute()
 
 # @run_once
