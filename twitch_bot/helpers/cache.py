@@ -12,8 +12,8 @@ def spawn_cache(channels: list, users: str, streamers: str, database):
 		cache['streamers'] = set(parse_string(streamers))
 		send_from_redis_to_cache(cache, database)
 
-	except BaseException as e:
-		print('An exception ocurred {}'.format(e))
+	except BaseException as e: ...
+		# print('An exception ocurred {}'.format(e))
 	return cache
 
 def add_to_session_cache(data, key, value):
@@ -24,14 +24,14 @@ def send_from_redis_to_cache(cache, conn):
 		for m in conn.smembers(key):
 			cache[key].add(m.decode('utf-8'))
 
-def send_from_cache_to_redis(cache, conn):
+def send_from_cache_to_redis(cache, conn, time: timedelta):
 	with conn.pipeline() as pipe:
 		for set_id, set_value in cache.items():
 			pipe.sadd(set_id, *set_value)
-			pipe.expire(set_id, timedelta(weeks=1))
+			pipe.expire(set_id, time)
 		pipe.execute()
 
 # @run_once
 def add_all_users_in_chat_to_cache(cache, key, chatters):
-	print(f"Adicionou chatters ao cache de `{key}`: {chatters.all}")
+	# print(f"Adicionou chatters ao cache de `{key}`: {chatters.all}")
 	return [cache[key].add(c) for c in chatters.all]
