@@ -7,6 +7,12 @@ services:
       - '6379:6379'
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - database
+  wild-overflow:
+    image: 'vcwild/wildoverflow:latest'
+    networks:
+      - database
     #   - REDIS_PASSWORD=redispass
     # networks:
     #   - app-tier
@@ -15,6 +21,6 @@ services:
     #   networks:
     #     - app-tier
 
-# networks:
-#   app-tier:
-#     driver: bridge
+networks:
+  database:
+    driver: bridge
