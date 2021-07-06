@@ -3,10 +3,13 @@ import os
 import random
 import dotenv
 import redis
-from .greeting_messages import initial_greetings
+
+from twitchio.ext import commands
+from twitchio.dataclasses import Channel, User, Message, Context
+
 from twitch_bot.cogs import greetings
 from twitch_bot.helpers.clear_strings import parse_string
-from twitchio.ext import commands
+from twitch_bot.cogs import greeting_messages
 from twitch_bot.helpers.cache import (
 	add_to_session_cache,
 	send_from_cache_to_redis,
@@ -14,7 +17,7 @@ from twitch_bot.helpers.cache import (
 	add_all_users_in_chat_to_cache
 )
 
-from twitch_bot.cogs import greeting_messages
+from .greeting_messages import initial_greetings
 
 dotenv.load_dotenv()
 
@@ -31,7 +34,8 @@ class TwitchBot(commands.Bot):
 		db = redis.Redis(
 			host=os.environ['REDIS_ENDPOINT'],
 			port=6379,
-			db=0)
+			db=0
+        )
 		super().__init__(
 			irc_token=os.environ['OAUTH_TOKEN'],
 			client_id=os.environ['CLIENT_ID'],
@@ -66,7 +70,7 @@ class TwitchBot(commands.Bot):
 
 		print(f'{self.nick} is ready!')
 
-	async def event_message(self, message):
+	async def event_message(self, message: Message):
 		"""Triggers every time the bot receives a new message"""
 		if message.author.name == self.nick:
 			# TODO: Faltou corrigir porque está bugado e não funciona
@@ -78,21 +82,19 @@ class TwitchBot(commands.Bot):
 		message.content = message.content.lower()
 		await self.handle_commands(message)
 
-	async def event_join(self, user):
+	async def event_join(self, user: User) -> None:
 		"""Triggers every time a new user joins the chat"""
 		key = user.channel.name
-
 		if user.name not in self.cache[key]:
 			await self.greet_person(self.cache, user.name, user.channel)
 
 			self.cache[key].add(user.name)
-
-			print(f"usuários no cache de `{key}`: {self.cache[key]}")
+			# print(f"usuários no cache de `{key}`: {self.cache[key]}")
 
 			send_from_cache_to_redis(self.cache, self.db, timedelta(days=2))
 			# print(f"Usuários no cache geral: {list(self.cache.items())}")
 
-	async def greet_person(self, cache, user_name, channel):
+	async def greet_person(self, cache, user_name, channel: Channel):
 		"""Sh's if the user is a streamer, else shows greeting if interactions are active"""
 		if user_name in cache['streamers'] and user_name not in self.channels:
 			return await greetings.sh_person(user_name, channel)
@@ -106,44 +108,60 @@ class TwitchBot(commands.Bot):
 			msg = os.environ['MSG_42']
 			await ctx.send(msg.format(ctx.author.name))
 
-	@commands.command(name='interagir', aliases=['interações', 'fala', 'falar', 'desmutar'])
+	@commands.command(
+        name='interagir',
+        aliases=['interações', 'fala', 'falar', 'desmutar']
+    )
 	async def interact(self, ctx):
 		if ctx.author.is_mod:
 			self.interactions = True
 			return await ctx.send("Interações ativadas!")
+		await ctx.send("Foi mal, mas você não pode fazer isso BibleThump")
 
-		await ctx.send("Você não tem permissões para mudar o bot")
-
-	@commands.command(name='shh', aliases=['silêncio', 'quieto', 'silencio', 'xiu', 'shiu', 'vacilao', 'vacilão' 'mutado'])
+	@commands.command(
+        name='shh',
+        aliases=[
+            'silêncio', 'quieto', 'silencio', 'xiu','shiu',
+            'vacilao', 'vacilão' 'mutado'
+        ]
+    )
 	async def shush(self, ctx):
 		if ctx.author.is_mod:
 			self.interactions = False
 			return await ctx.send("Tá bom, vou ficar quieto :(")
 		await ctx.send(os.environ['MSG_GENERIC_FAIL'].format(ctx.author.name))
 
-	@commands.command(name='flush', aliases=['avc', 'flushdb', 'limpar', 'clean'])
+	@commands.command(
+        name='flush',
+        aliases=['avc', 'flushdb', 'limpar', 'clean']
+    )
 	async def flush_database(self, ctx):
 		if ctx.author.is_mod:
 			members = list(self.db.smembers(ctx.channel.name))
 
 			[self.db.srem(ctx.channel.name, member) for member in members]
 
-			# self.cache.pop(ctx.channel.name)
 			self.cache[ctx.channel.name] = set(self.ignored_list)
 
-			return await ctx.send(os.environ['MSG_FLUSH_DB'].format(ctx.author.name))
+			return await ctx.send(
+                os.environ['MSG_FLUSH_DB'].format(ctx.author.name)
+            )
 
 		await ctx.send(os.environ['MSG_GENERIC_FAIL'].format(ctx.author.name))
 
-	@commands.command(name="commands",
-					  aliases=['comandos', 'comands', 'comando', 'ajuda'])
+	@commands.command(
+        name="commands",
+		aliases=['comandos', 'comands', 'comando', 'ajuda']
+    )
 	async def list_command(self, ctx):
 		if ctx.author.is_mod:
 			return await ctx.send(
 				"{}, meus comandos são: ".format(ctx.author.name) +\
 					str(list(self.commands.keys()))[1:-1]
 			)
-		await ctx.send(os.environ['MSG_LIST_COMMANDS_FAIL'].format(ctx.author.name))
+		await ctx.send(
+            os.environ['MSG_LIST_COMMANDS_FAIL'].format(ctx.author.name)
+        )
 
 	@commands.command(name="dado", aliases=['dados', 'dice'])
 	async def play_dice(self, ctx):
@@ -229,7 +247,27 @@ class TwitchBot(commands.Bot):
 		msg = os.environ['MSG_JP_AMIS']
 		await ctx.send(msg)
 
-	@commands.command(name='jey', aliases=['jeylab', 'jey_lab', 'jeylab_robotica'])
+	@commands.command(
+        name='jey',
+        aliases=[
+            'jeylab',
+            'jey_lab',
+            'jeylab_robotica',
+            'json',
+            'yaml',
+            'protobuff'
+        ]
+    )
 	async def jeylab(self, ctx):
 		msg = os.environ['MSG_JEYLAB'].format(ctx.author.name)
+		await ctx.send(msg)
+
+	@commands.command(name='windows')
+	async def windows(self, ctx):
+		msg = "/me {}, você quis dizer KDE Plasma?".format(ctx.author.name)
+		await ctx.send(msg)
+
+	@commands.command(name='whatsapp2')
+	async def whatsapp_dois(self, ctx):
+		msg = "/me cê viu que lançaram o whatsapp 2?? 😳😳😳😳😳😳😳😳😳😳😳😳😳😳 +353 833152259984 (Whats do em1dio)"
 		await ctx.send(msg)
