@@ -32,9 +32,9 @@ class TwitchBot(commands.Bot):
 		channels = list(set(parse_string(os.environ['INITIAL_CHANNELS'])))
 		ignored_list = list(set(parse_string(os.environ['IGNORED_LIST'])))
 		db = redis.Redis(
-			host=os.environ['REDIS_ENDPOINT'],
-			port=6379,
-			db=0
+			host="redis",
+			db=0,
+            socket_timeout=5
         )
 		super().__init__(
 			irc_token=os.environ['OAUTH_TOKEN'],
