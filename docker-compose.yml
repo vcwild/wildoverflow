@@ -7,19 +7,13 @@ services:
       - '6379'
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
+      #   - REDIS_PASSWORD=redispass
     networks:
       - database
   wild-overflow:
     image: 'vcwild/wildoverflow:latest'
     networks:
       - database
-    #   - REDIS_PASSWORD=redispass
-    # networks:
-    #   - app-tier
-    # myapp:
-    #   image: 'YOUR_APPLICATION_IMAGE'
-    #   networks:
-    #     - app-tier
 
 networks:
   database:
