@@ -1,92 +1,74 @@
 # wildOverflow Bot
 
-O wildOverflow é um chatbot da Twitch construído sob o framework [TwitchIO](twitchio.readthedocs.io/).
-O bot procura interagir com usuários novos no chat e fornecer comandos básicos de interação.
+wildOverflow is a Twitch chatbot built with the [TwitchIO](twitchio.readthedocs.io/) framework.
+The bot greets joining chatters and has basic command interactions. If a joining chatter is a streamer, the bot will send a shoutout to that person's channel.
 
 ## Table of Contents
 
 - [Features](#features)
-- [Como usar](#como-usar)
-- [Para implementar](#próximos-passos)
-- [Integrações](#integrações)
-- [Sugestões e Bugs](#sugestões-e-bugs)
-- [Sobre](#sobre)
+- [Usage](#usage)
+- [Integrations](#integrations)
+- [Bugs & suggestions](#bugs-and-suggestions)
+- [About](#about)
 
 ## Features
 
-Recursos existentes no bot:
+Existing resources:
 
-- Comandos parametrizados de acordo com o nome do canal que o bot está
-- Saudação quando uma nova pessoa se junta ao chat
-- Mandar um sh quando encontrar um streamer que se juntou ao chat
-- Sistema de cache com Redis
-- Lembrar dos usuários que já interagiu
+- Parameterized commands according to the context of the channel the bot is on
+- Greeting message when a new person joins the chat
+- Send a sh when a streamer has joined the chat
+- User caching
+- Reminds its recent interactions
 
-## Como usar
+## Usage
 
-### Pré-requisitos
+### Requirements
 
-Serão necessários os seguintes pré-requisitos
+The following prerequisites will be needed
 
 - [Poetry](https://python-poetry.org/)
 - Python >= 3.6
 - [Docker-compose](https://docs.docker.com/compose/)
-- Requisição de um [Twitch OAuth Token](https://twitchapps.com/tmi/)
+- [Twitch OAuth Token](https://twitchapps.com/tmi/)
 
 ### Setup
 
-- Subir o cache do bot em um container docker
+- Mount the bot cache in a docker container 
 
 ```sh
 docker-compose up -d
 ```
 
-- Instalar as dependências do bot
+- Install bot dependencies
 
 ```sh
 poetry install
 ```
 
-- Renomear o arquivo `.env_mock` para `.env` e configurar o bot com suas credenciais
+- Rename `.env_mock` to `.env` and configre the bot credentials
 
-- Iniciar o bot
+- Run the bot
 
 ```sh
 poetry run bot.py
 ```
 
-### Como usar o bot
+### How to use
 
-Basta interagir com o bot no chat utilizando:
+Interact with the bot in the chat by typing: 
 
-`@wildOverflow [comando]` ou `![comando]`
+`@wildOverflow [comando]` or `![comando]`
 
-## Próximos passos
+## Integrations
 
-Recursos para releases futuros:
+- Hub API (in development)
 
-- Banco de dados de registros
-- Logging
-- Sistema de sobscrição de comandos padrões via chat da Twitch
-- Comando tempo (copiando a live do Kaduzius)
-- Sistema de registro de streamers via comando !update streamers [name]
-- Sistema de chatting por contexto utilizando a implementação open-source do Rasa
-- Calendário com dias e horários do streamer
-- Sistema de sorteio
-- Song request
-- Song playing
-- Sistema de economia (moeda de troca)
-- Mini games
+## Bugs and suggestions
 
-## Integrações
+Did you find a bug or you would like to suggest a feature to put in the bot?
+Please feel free to reach out and open an issue. 
 
-- RabbitMQ (em desenvolvimento)
+## About
 
-## Sugestões e bugs
-
-Encontrou algum bug ou gostaria de sugerir um recurso para colocar no bot?
-Fique à vontade para abrir uma issue.
-
-## Sobre
-
-O projeto está sob a licença *Gnu General Public License 3.0*.
+The project is under the *Gnu General Public License 3.0*.
