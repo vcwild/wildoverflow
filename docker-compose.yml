@@ -10,10 +10,12 @@ services:
       #   - REDIS_PASSWORD=redispass
     networks:
       - database
+    restart: always
   wild-overflow:
     image: 'vcwild/wildoverflow:latest'
     networks:
       - database
+    restart: always
 
 networks:
   database:
