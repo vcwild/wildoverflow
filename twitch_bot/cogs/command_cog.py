@@ -207,12 +207,6 @@ class TwitchBot(commands.Bot):
         msg = "{} pong!"
         await ctx.send(msg.format(ctx.author.name))
 
-    @commands.command(name='playlist')
-    async def message_playlist(self, ctx):
-        if ctx.channel.name == 'vcwild':
-            msg = os.environ['MSG_PLAYLIST']
-            await ctx.send(msg.format(ctx.author.name))
-
     @commands.command(name='sh', aliases=['sh-so'])
     async def sh_so(self, ctx):
         user_name = ctx.message.clean_content.split(' ')[1].lower()
@@ -273,4 +267,9 @@ class TwitchBot(commands.Bot):
     @commands.command(name='whatsapp2')
     async def whatsapp_dois(self, ctx):
         msg = "/me cê viu que lançaram o whatsapp 2?? 😳😳😳😳😳😳😳😳😳😳😳😳😳😳 +353 833152259984 (Whats do em1dio)"
+        await ctx.send(msg)
+
+    @commands.command(name='devcaminhante', aliases=['klaus', 'caminhante'])
+    async def dev_caminhante(self, ctx):
+        msg = "/me {}, conheça o projeto criado para os aventureiros no mundo da programação. Seja feliz sendo um eterno aprendiz! 🤗👉 https://t.me/DevCaminhante".format(ctx.author.name)
         await ctx.send(msg)
