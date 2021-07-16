@@ -9,6 +9,7 @@ python = "^3.8"
 twitchio = "^1.2.3"
 python-dotenv = "^0.17.1"
 redis = "^3.5.3"
+PyYAML = "^5.4.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
