@@ -1,6 +1,6 @@
 import asyncio
 from random import randint
-from .greeting_messages import hello_msgs
+from twitch_bot.cogs.greeting_messages import hello_msgs
 
 async def sh_person(user_name, channel):
 	loop = asyncio.get_event_loop()

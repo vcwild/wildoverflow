@@ -9,7 +9,7 @@ from twitchio.dataclasses import Channel, User, Message, Context
 
 from twitch_bot.cogs import greetings
 from twitch_bot.helpers.clear_strings import parse_string
-from twitch_bot.cogs import greeting_messages
+# from twitch_bot.cogs import greeting_messages
 from twitch_bot.helpers.cache import (
     add_to_session_cache,
     send_from_cache_to_redis,
@@ -17,7 +17,7 @@ from twitch_bot.helpers.cache import (
     add_all_users_in_chat_to_cache
 )
 
-from .greeting_messages import initial_greetings
+from twitch_bot.cogs.greeting_messages import initial_greetings
 
 dotenv.load_dotenv()
 
