@@ -16,7 +16,6 @@ docker-compose.yml
 # packages
 poetry.lock
 pyproject.toml
-requirements.txt
 
 # scripts
 integrate.sh
