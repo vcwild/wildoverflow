@@ -12,7 +12,7 @@ services:
       - database
     restart: always
   wild-overflow:
-    image: vcwild/wildoverflow:0.2.2
+    image: vcwild/wildoverflow:0.3.0
     networks:
       - database
     env_file: .env
