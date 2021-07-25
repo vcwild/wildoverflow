@@ -1,8 +1,8 @@
-version: '2'
+version: '3'
 
 services:
   redis:
-    image: 'bitnami/redis:latest'
+    image: bitnami/redis:latest
     ports:
       - '6379'
     environment:
@@ -12,9 +12,10 @@ services:
       - database
     restart: always
   wild-overflow:
-    image: 'vcwild/wildoverflow:latest'
+    image: vcwild/wildoverflow:0.2.2
     networks:
       - database
+    env_file: .env
     restart: always
 
 networks:
