@@ -1,0 +1,26 @@
+# folders
+/tests
+
+# docker configuration files
+Dockerfile
+docker-compose.yml
+
+# environments
+.env
+.env.example
+
+# git
+.gitignore
+.git
+
+# packages
+poetry.lock
+pyproject.toml
+requirements.txt
+
+# scripts
+integrate.sh
+
+# other
+LICENSE
+README.md
