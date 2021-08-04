@@ -320,3 +320,10 @@ class TwitchBot(commands.Bot):
         msg = self.messages.commands['MSG_TIP']\
             .format(ctx.author.name, ctx.channel.name)
         await ctx.send(msg)
+
+    @commands.command(name='dornelles',
+                      aliases=['dornelestv', '3bc', '3bclang'])
+    async def dornelles(self, ctx: Context):
+        msg = self.messages.commands['MSG_DORNELLES']\
+            .format(ctx.author.name)
+        await ctx.send(msg)
