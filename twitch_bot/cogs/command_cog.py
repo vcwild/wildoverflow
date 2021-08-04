@@ -3,8 +3,7 @@ from datetime import timedelta
 from twitchio.ext import commands
 from twitchio.dataclasses import Channel, User, Message, Context
 
-# from twitch_bot.helpers.decorators import is_mod
-
+from twitch_bot.helpers.decorators import is_mod
 
 from random import choice
 
@@ -182,15 +181,16 @@ class TwitchBot(commands.Bot):
         await ctx.send(choice(self.messages.commands['MSG_GENERIC_FAIL'])
                        .format(ctx.author.name))
 
-    @commands.command(name="commands",
-                      aliases=['comandos', 'comands', 'comando', 'ajuda'])
-    async def list_command(self, ctx):
-        if ctx.author.is_mod:
-            return await ctx.send("{}, meus comandos são: "
-                                  .format(ctx.author.name)
-                                  + str(list(self.commands.keys()))[1:-1])
-        await ctx.send(self.messages.commands['MSG_LIST_COMMANDS_FAIL']
-                       .format(ctx.author.name))
+    # TODO: Removido comando porque estava conflitando com os bots dos creators
+    # @commands.command(name="commands",
+    #                   aliases=['comandos', 'comands', 'comando', 'ajuda'])
+    # async def list_command(self, ctx):
+    #     if ctx.author.is_mod:
+    #         return await ctx.send("{}, meus comandos são: "
+    #                               .format(ctx.author.name)
+    #                               + str(list(self.commands.keys()))[1:-1])
+    #     await ctx.send(self.messages.commands['MSG_LIST_COMMANDS_FAIL']
+    #                    .format(ctx.author.name))
 
     @commands.command(name="dado", aliases=['dados', 'dice'])
     async def play_dice(self, ctx):
@@ -312,4 +312,11 @@ class TwitchBot(commands.Bot):
     async def mock_greeting(self, ctx):
         msg = choice(self.messages.greetings)\
             .format(ctx.author.name)
+        await ctx.send(msg)
+
+    @commands.command(name='tip', aliases=['tips', 'donate', 'doar', 'doação',
+                                           'contribuir', 'contribuição'])
+    async def tip(self, ctx: Context):
+        msg = self.messages.commands['MSG_TIP']\
+            .format(ctx.author.name, ctx.channel.name)
         await ctx.send(msg)
