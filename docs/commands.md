@@ -1,27 +1,25 @@
-# wildOverflow Bot Commands
-
 ## Table of contents
 
 - [42](#42)
-- [Cafemaker](#Cafemaker)
+- [Cafemaker](#cafemaker)
 - [Daviprm](#daviprm)
-- [Dice/Dados](#Dice/Dados)
+- [Dice/Dados](#dice)
+- [Dornelles](#dornelles)
 - [Eurotrip](#eurotrip)
-- [Github](#Github)
+- [Github](#github)
 - [HUB](#hub)
 - [Instagram](#instagram)
 - [Jeylab](#jeylab)
-- [JP Amis](#Jp-amis)
+- [JP Amis](#jp-amis)
 - [Maker](#maker)
 - [Tempo](#tempo)
 - [Twitter](#twitter)
 - [Windows](#windows)
-- [Whatsapp2](#Whatsapp2)
+- [Whatsapp2](#whatsapp2)
 - [SHH](#shh)
-- [Tip](#Tip)
-- [Dornelles](#dornelles)
+- [Tip/Donate](#tip)
 
-## Commands
+## About commands
 
 These are the list of commands available in the wildOverflow chatbot, use them carefully!!
 
@@ -41,12 +39,11 @@ It invites you to become a Hub Tech creator.
 
 It shows the DaviPRM channel invitation call.
 
-
 ### DevCaminhante
 
 It shows the DevCaminhante Telegram invite.
 
-### Dice/Dados
+### Dice
 
 It plays dice to you, I guess.
 
