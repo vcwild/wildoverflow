@@ -34,7 +34,21 @@ The following prerequisites will be needed
 
 ### Setup
 
-- Mount the bot cache in a docker container 
+There are 2 ways you can configure wildOverflow to work
+
+#### 1. Simple use
+
+- Clone the repository
+- Rename `.env.example` to `.env` and configure the bot credentials
+- Mount the bot cache in a docker container
+
+```sh
+docker-compose up -d
+```
+
+#### 2. Setup via development environment
+
+- Mount the bot cache in a docker container
 
 ```sh
 docker-compose up -d
@@ -46,7 +60,7 @@ docker-compose up -d
 poetry install
 ```
 
-- Rename `.env_mock` to `.env` and configre the bot credentials
+- Rename `.env.example` to `.env` and configure the bot credentials
 
 - Run the bot
 
@@ -56,9 +70,7 @@ poetry run bot.py
 
 ### How to use
 
-Interact with the bot in the chat by typing: 
-
-`@wildOverflow [comando]` or `![comando]`
+Main commands are [listed here](https://ahub-tech.github.io/twitch-bot-wildoverflow/docs/commands)
 
 ## Integrations
 
@@ -67,7 +79,7 @@ Interact with the bot in the chat by typing:
 ## Bugs and suggestions
 
 Did you find a bug or you would like to suggest a feature to put in the bot?
-Please feel free to reach out and open an issue. 
+Please feel free to reach out and open an issue.
 
 ## About
 
