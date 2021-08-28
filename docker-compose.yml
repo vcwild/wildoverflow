@@ -3,16 +3,15 @@ version: '3'
 services:
   redis:
     image: bitnami/redis:latest
-    # ports:
-    #   - '6380:6379'
+    ports:
+      - '6379:6379'
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
-      #   - REDIS_PASSWORD=redispass
     networks:
       - database
     restart: always
   wild-overflow:
-    image: vcwild/wildoverflow:0.3.1
+    image: vcwild/wildoverflow:0.4.0
     networks:
       - database
     env_file: .env
