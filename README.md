@@ -8,6 +8,7 @@ The bot greets joining chatters and has basic command interactions. If a joining
 - [Features](#features)
 - [Usage](#usage)
 - [Integrations](#integrations)
+- [Contribute](#contribute)
 - [Bugs & suggestions](#bugs-and-suggestions)
 - [About](#about)
 
@@ -75,6 +76,10 @@ Main commands are [listed here](https://ahub-tech.github.io/twitch-bot-wildoverf
 ## Integrations
 
 - Hub API (in development)
+
+## Contribute
+
+If you want to contribute to the project, please read before our [CONTRIBUTING](./CONTRIBUTING.md) policy.
 
 ## Bugs and suggestions
 
