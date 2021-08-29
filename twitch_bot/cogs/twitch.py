@@ -1,14 +1,11 @@
 from datetime import timedelta
 
 from twitchio.ext import commands
-from twitchio.dataclasses import Channel, User, Message, Context
-
-from twitch_bot.helpers.decorators import is_mod, message
+from twitchio.dataclasses import Channel, User, Message
 
 from random import choice
 
-from twitch_bot.cogs.messages import Messages
-from twitch_bot.cogs.data_loader import DataParser
+from twitch_bot.cogs.data_loader import DataParser, Messages
 from twitch_bot.helpers.cache import (
     add_to_session_cache,
     send_from_cache_to_redis,
@@ -18,8 +15,6 @@ from twitch_bot.helpers.cache import (
 
 import dotenv
 import os
-import random
-
 import logging
 import redis
 
@@ -46,7 +41,9 @@ class TwitchBot(commands.Bot):
 
         streamers = DataParser.streamers
 
-        db = redis.Redis(host="0.0.0.0", db=0, socket_timeout=5)
+        db = redis.Redis(
+            host=os.environ['DATABASE_HOST'], db=0, socket_timeout=5
+        )
 
         super().__init__(
             irc_token=os.environ['OAUTH_TOKEN'],
@@ -64,8 +61,11 @@ class TwitchBot(commands.Bot):
         )
 
         self.channels = channels
+
         self.db = db
+
         self.ignored_list = ignored_list
+
         self.interactions = interactions
 
         self.messages = Messages()
@@ -144,22 +144,9 @@ class TwitchBot(commands.Bot):
         if self.interactions:
             await self.say_hello(author, channel)
 
-    @message(name='quarentaedois', aliases=['42', 'quarenta e dois'])
-    async def message_42(self, ctx: Context, msg):
-        if ctx.channel.name == 'vcwild':
-            await ctx.send(msg.format(ctx.author.name))
-
     @commands.command(
         name='interagir',
-        aliases=[
-            'interações',
-            'falar',
-            'desmutar',
-            'ativar',
-            'ativo',
-            'activate',
-            'active',
-        ],
+        aliases=['falar', 'desmutar', 'ativar', 'ativo', 'activate', 'active'],
     )
     async def interact(self, ctx):
         if ctx.author.is_mod:
@@ -178,132 +165,16 @@ class TwitchBot(commands.Bot):
             )
         )
 
-    @commands.command(name='flush_db', aliases=['flush', 'limpar', 'clean'])
-    async def flush_database(self, ctx: Context):
-        author = ctx.author.name
-        channel = ctx.channel.name
-
-        if ctx.author.is_mod:
-            members = list(self.db.smembers(channel))
-
-            [self.db.srem(channel, member) for member in members]
-
-            self.cache[channel] = set(self.ignored_list)
-
-            return await ctx.send(
-                self.messages.commands['flush_db'].format(author)
-            )
-
-        await ctx.send(
-            choice(self.messages.commands['generic_fail']).format(author)
-        )
-
-    @message(
-        name="list_commands",
-        aliases=['comandos', 'commands', 'comands', 'comando', 'ajuda', 'help'],
-    )
-    async def list_command(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name))
-
-    @message(name='github', aliases=['gh'])
-    async def message_github(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name, ctx.channel.name))
-
-    @message(name='linkedin')
-    async def message_linkedin(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name, ctx.channel.name))
-
-    @message(name='twitter')
-    async def message_twitter(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name, ctx.channel.name))
-
-    @message(name='instagram')
-    async def message_instagram(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name, ctx.channel.name))
-
-    @message(name='tempo')
-    async def message_tempo(self, ctx, msg):
-        if ctx.channel.name != 'kaduzius':
-            await ctx.send(msg.format(ctx.author.name))
-
-    @message(name='ping')
-    async def message_ping(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name))
-
     @commands.command(name='sh', aliases=['sh-so'])
     async def sh_so(self, ctx):
-        user_name = ctx.message.clean_content.split(' ')[1].lower()
-        add_to_session_cache(self.cache, ctx.channel.name, user_name)
-        logger.info(f"Adicionado {user_name} ao cache {ctx.channel.name}")
-
-    @message(name='hub', aliases=['ahub', 'hub tech', 'ahub tech'])
-    async def message_hub(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name))
-
-    @message(name='creator', aliases=['seja', 'creators'])
-    async def message_creator(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name))
-
-    @message(name='daviprm', aliases=['daviprm'])
-    async def message_davi(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name))
-
-    @message(name='cafemaker')
-    async def message_cafemaker(self, ctx, msg):
-        if ctx.channel.name != 'kaduzius':
-            await ctx.send(msg)
-
-    @message(name='eurotrip')
-    async def eurotrip(self, ctx, msg):
-        await ctx.send(msg)
-
-    @message(name='maker')
-    async def maker(self, ctx, msg):
-        await ctx.send(msg)
-
-    @message(name='jp_amis', aliases=['jp'])
-    async def jp_amis(self, ctx, msg):
-        await ctx.send(msg)
-
-    @message(name='jeylab', aliases=['json'])
-    async def jeylab(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name))
-
-    @message(name='windows')
-    async def windows(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name))
-
-    @message(name='whatsapp2')
-    async def whatsapp_dois(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name))
-
-    @message(name='dev_caminhante', aliases=['klaus', 'devcaminhante'])
-    async def dev_caminhante(self, ctx, msg):
-        await ctx.send(msg.format(ctx.author.name))
+        streamer = ctx.message.clean_content.split(' ')[1].lower()
+        add_to_session_cache(self.cache, ctx.channel.name, streamer)
+        logger.info(f"Adicionado {streamer} ao cache {ctx.channel.name}")
 
     @commands.command(
         name='greeting',
-        aliases=[
-            'oi',
-            'olá',
-            'fala',
-            'salve',
-            'bom',
-            'boa',
-            'eae',
-            'eai',
-            'eaí',
-        ],
+        aliases=['oi', 'olá', 'fala', 'salve', 'bom', 'boa'],
     )
     async def mock_greeting(self, ctx):
         msg = choice(self.messages.greetings)
-        await ctx.send(msg.format(ctx.author.name))
-
-    @message(name='tip', aliases=['tips', 'donate', 'doar', 'contribuir'])
-    async def tip(self, ctx: Context, msg):
-        await ctx.send(msg.format(ctx.author.name, ctx.channel.name))
-
-    @message(name='dornelles', aliases=['dornelestv', '3bc'])
-    async def dornelles(self, ctx: Context):
-        msg = self.messages.commands['dornelles'].format(ctx.author.name)
         await ctx.send(msg.format(ctx.author.name))
