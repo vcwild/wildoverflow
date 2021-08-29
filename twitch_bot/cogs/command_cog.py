@@ -3,7 +3,7 @@ from datetime import timedelta
 from twitchio.ext import commands
 from twitchio.dataclasses import Channel, User, Message, Context
 
-from twitch_bot.helpers.decorators import is_mod
+from twitch_bot.helpers.decorators import is_mod, message
 
 from random import choice
 
@@ -46,7 +46,7 @@ class TwitchBot(commands.Bot):
 
         streamers = DataParser.streamers
 
-        db = redis.Redis(host="redis", db=0, socket_timeout=5)
+        db = redis.Redis(host="0.0.0.0", db=0, socket_timeout=5)
 
         super().__init__(
             irc_token=os.environ['OAUTH_TOKEN'],
@@ -76,7 +76,7 @@ class TwitchBot(commands.Bot):
         msg = "!sh {}"
 
         if author == 'vcwild':
-            msg = self.messages.commands['MSG_DENY_SH']
+            msg = self.messages.commands['deny_sh']
 
         await channel.send(msg.format(author))
 
@@ -144,10 +144,9 @@ class TwitchBot(commands.Bot):
         if self.interactions:
             await self.say_hello(author, channel)
 
-    @commands.command(name='42', aliases=['quarentaedois', 'quarenta e dois'])
-    async def message_42(self, ctx: Context):
+    @message(name='quarentaedois', aliases=['42', 'quarenta e dois'])
+    async def message_42(self, ctx: Context, msg):
         if ctx.channel.name == 'vcwild':
-            msg = self.messages.commands['MSG_42']
             await ctx.send(msg.format(ctx.author.name))
 
     @commands.command(
@@ -172,14 +171,14 @@ class TwitchBot(commands.Bot):
     async def shush(self, ctx):
         if ctx.author.is_mod:
             self.interactions = False
-            return await ctx.send(self.messages.commands['MSG_SHUSH_SUCCESS'])
+            return await ctx.send(self.messages.commands['shush_success'])
         await ctx.send(
-            choice(self.messages.commands['MSG_GENERIC_FAIL']).format(
+            choice(self.messages.commands['generic_fail']).format(
                 ctx.author.name
             )
         )
 
-    @commands.command(name='flush', aliases=['flushdb', 'limpar', 'clean'])
+    @commands.command(name='flush_db', aliases=['flush', 'limpar', 'clean'])
     async def flush_database(self, ctx: Context):
         author = ctx.author.name
         channel = ctx.channel.name
@@ -192,69 +191,43 @@ class TwitchBot(commands.Bot):
             self.cache[channel] = set(self.ignored_list)
 
             return await ctx.send(
-                self.messages.commands['MSG_FLUSH_DB'].format(author)
+                self.messages.commands['flush_db'].format(author)
             )
 
         await ctx.send(
-            choice(self.messages.commands['MSG_GENERIC_FAIL']).format(author)
+            choice(self.messages.commands['generic_fail']).format(author)
         )
 
-    @commands.command(
-        name="commands",
-        aliases=['comandos', 'comands', 'comando', 'ajuda', 'help'],
+    @message(
+        name="list_commands",
+        aliases=['comandos', 'commands', 'comands', 'comando', 'ajuda', 'help'],
     )
-    async def list_command(self, ctx):
-        if ctx.author.is_mod:
-            return await ctx.send(
-                "{}, meus comandos são: ".format(ctx.author.name)
-                + str(list(self.commands.keys()))[1:-1]
-            )
+    async def list_command(self, ctx, msg):
+        await ctx.send(msg.format(ctx.author.name))
 
-        msg = self.messages.commands['MSG_LIST_COMMANDS'].format(
-            ctx.author.name
-        )
-
-        await ctx.send(msg)
-
-    @commands.command(name="dado", aliases=['dados', 'dice'])
-    async def play_dice(self, ctx):
-        number = random.randint(0, 6)
-        msg = self.messages.commands['MSG_DICE']
-
-        if number == 0:
-            msg = self.messages.commands['MSG_DICE_ZERO']
-
-        await ctx.send(msg.format(ctx.author.name, number))
-
-    @commands.command(name='github', aliases=['gh'])
-    async def message_github(self, ctx):
-        msg = self.messages.commands['MSG_GITHUB']
+    @message(name='github', aliases=['gh'])
+    async def message_github(self, ctx, msg):
         await ctx.send(msg.format(ctx.author.name, ctx.channel.name))
 
-    @commands.command(name='linkedin')
-    async def message_linkedin(self, ctx):
-        msg = self.messages.commands['MSG_LINKEDIN']
+    @message(name='linkedin')
+    async def message_linkedin(self, ctx, msg):
         await ctx.send(msg.format(ctx.author.name, ctx.channel.name))
 
-    @commands.command(name='twitter')
-    async def message_twitter(self, ctx):
-        msg = self.messages.commands['MSG_TWITTER']
+    @message(name='twitter')
+    async def message_twitter(self, ctx, msg):
         await ctx.send(msg.format(ctx.author.name, ctx.channel.name))
 
-    @commands.command(name='instagram')
-    async def message_instagram(self, ctx):
-        msg = self.messages.commands['MSG_INSTAGRAM']
+    @message(name='instagram')
+    async def message_instagram(self, ctx, msg):
         await ctx.send(msg.format(ctx.author.name, ctx.channel.name))
 
-    @commands.command(name='tempo')
-    async def message_tempo(self, ctx):
+    @message(name='tempo')
+    async def message_tempo(self, ctx, msg):
         if ctx.channel.name != 'kaduzius':
-            msg = self.messages.commands['MSG_TEMPO']
             await ctx.send(msg.format(ctx.author.name))
 
-    @commands.command(name='ping')
-    async def message_ping(self, ctx):
-        msg = "{} pong!"
+    @message(name='ping')
+    async def message_ping(self, ctx, msg):
         await ctx.send(msg.format(ctx.author.name))
 
     @commands.command(name='sh', aliases=['sh-so'])
@@ -263,75 +236,50 @@ class TwitchBot(commands.Bot):
         add_to_session_cache(self.cache, ctx.channel.name, user_name)
         logger.info(f"Adicionado {user_name} ao cache {ctx.channel.name}")
 
-    @commands.command(name='hub', aliases=['ahub', 'hub tech', 'ahub tech'])
-    async def message_hub(self, ctx):
-        msg = self.messages.commands['MSG_HUB'].format(ctx.author.name)
-        await ctx.send(msg)
+    @message(name='hub', aliases=['ahub', 'hub tech', 'ahub tech'])
+    async def message_hub(self, ctx, msg):
+        await ctx.send(msg.format(ctx.author.name))
 
-    @commands.command(name='creator', aliases=['seja', 'creators'])
-    async def message_creator(self, ctx):
-        msg = self.messages.commands['MSG_CREATOR'].format(ctx.author.name)
-        await ctx.send(msg)
+    @message(name='creator', aliases=['seja', 'creators'])
+    async def message_creator(self, ctx, msg):
+        await ctx.send(msg.format(ctx.author.name))
 
-    @commands.command(name='davi', aliases=['daviprm'])
-    async def spotted(self, ctx):
-        msg = self.messages.commands['MSG_DAVIPRM'].format(ctx.author.name)
-        await ctx.send(msg)
+    @message(name='daviprm', aliases=['daviprm'])
+    async def message_davi(self, ctx, msg):
+        await ctx.send(msg.format(ctx.author.name))
 
-    @commands.command(name='cafemaker')
-    async def cafe_maker(self, ctx):
+    @message(name='cafemaker')
+    async def message_cafemaker(self, ctx, msg):
         if ctx.channel.name != 'kaduzius':
-            msg = self.messages.commands['MSG_CAFEMAKER']
             await ctx.send(msg)
 
-    @commands.command(name='eurotrip')
-    async def eurotrip(self, ctx):
-        msg = self.messages.commands['MSG_EUROTRIP']
+    @message(name='eurotrip')
+    async def eurotrip(self, ctx, msg):
         await ctx.send(msg)
 
-    @commands.command(name='maker')
-    async def maker(self, ctx):
-        msg = self.messages.commands['MSG_MAKER']
+    @message(name='maker')
+    async def maker(self, ctx, msg):
         await ctx.send(msg)
 
-    @commands.command(name='jp', aliases=['jp_amis'])
-    async def jp_amis(self, ctx):
-        msg = self.messages.commands['MSG_JP_AMIS']
+    @message(name='jp_amis', aliases=['jp'])
+    async def jp_amis(self, ctx, msg):
         await ctx.send(msg)
 
-    @commands.command(
-        name='jey',
-        aliases=[
-            'jeylab',
-            'jey_lab',
-            'jeylab_robotica',
-            'json',
-            'yaml',
-            'protobuff',
-        ],
-    )
-    async def jeylab(self, ctx):
-        msg = self.messages.commands['MSG_JEYLAB'].format(ctx.author.name)
-        await ctx.send(msg)
+    @message(name='jeylab', aliases=['json'])
+    async def jeylab(self, ctx, msg):
+        await ctx.send(msg.format(ctx.author.name))
 
-    @commands.command(name='windows')
-    async def windows(self, ctx):
-        msg = self.messages.commands['MSG_WINDOWS'].format(ctx.author.name)
-        await ctx.send(msg)
+    @message(name='windows')
+    async def windows(self, ctx, msg):
+        await ctx.send(msg.format(ctx.author.name))
 
-    @commands.command(name='whatsapp2')
-    async def whatsapp_dois(self, ctx):
-        msg = self.messages.commands['MSG_WHATSAPP_DOIS'].format(
-            ctx.author.name
-        )
-        await ctx.send(msg)
+    @message(name='whatsapp2')
+    async def whatsapp_dois(self, ctx, msg):
+        await ctx.send(msg.format(ctx.author.name))
 
-    @commands.command(name='devcaminhante', aliases=['klaus', 'caminhante'])
-    async def dev_caminhante(self, ctx):
-        msg = self.messages.commands['MSG_DEV_CAMINHANTE'].format(
-            ctx.author.name
-        )
-        await ctx.send(msg)
+    @message(name='dev_caminhante', aliases=['klaus', 'devcaminhante'])
+    async def dev_caminhante(self, ctx, msg):
+        await ctx.send(msg.format(ctx.author.name))
 
     @commands.command(
         name='greeting',
@@ -348,29 +296,14 @@ class TwitchBot(commands.Bot):
         ],
     )
     async def mock_greeting(self, ctx):
-        msg = choice(self.messages.greetings).format(ctx.author.name)
-        await ctx.send(msg)
+        msg = choice(self.messages.greetings)
+        await ctx.send(msg.format(ctx.author.name))
 
-    @commands.command(
-        name='tip',
-        aliases=[
-            'tips',
-            'donate',
-            'doar',
-            'doação',
-            'contribuir',
-            'contribuição',
-        ],
-    )
-    async def tip(self, ctx: Context):
-        msg = self.messages.commands['MSG_TIP'].format(
-            ctx.author.name, ctx.channel.name
-        )
-        await ctx.send(msg)
+    @message(name='tip', aliases=['tips', 'donate', 'doar', 'contribuir'])
+    async def tip(self, ctx: Context, msg):
+        await ctx.send(msg.format(ctx.author.name, ctx.channel.name))
 
-    @commands.command(
-        name='dornelles', aliases=['dornelestv', '3bc', '3bclang']
-    )
+    @message(name='dornelles', aliases=['dornelestv', '3bc'])
     async def dornelles(self, ctx: Context):
-        msg = self.messages.commands['MSG_DORNELLES'].format(ctx.author.name)
-        await ctx.send(msg)
+        msg = self.messages.commands['dornelles'].format(ctx.author.name)
+        await ctx.send(msg.format(ctx.author.name))
