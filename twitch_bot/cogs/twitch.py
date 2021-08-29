@@ -1,25 +1,25 @@
+import logging
+import os
 from datetime import timedelta
-
-from twitchio.ext import commands
-from twitchio.dataclasses import Channel, User, Message
-
 from random import choice
+
+import dotenv
+import redis
+from twitchio.dataclasses import Channel, Message, User
+from twitchio.ext import commands
 
 from twitch_bot.cogs.data_loader import DataParser, Messages
 from twitch_bot.helpers.cache import (
+    add_all_users_in_chat_to_cache,
     add_to_session_cache,
     send_from_cache_to_redis,
     spawn_cache,
-    add_all_users_in_chat_to_cache,
 )
-
-import dotenv
-import os
-import logging
-import redis
 
 
 logger = logging.getLogger(__name__)
+
+logger.setLevel(logging.INFO)
 
 dotenv.load_dotenv()
 
@@ -128,7 +128,7 @@ class TwitchBot(commands.Bot):
             await self.greet_person(author, user.channel)
 
             self.cache[channel].add(author)
-            logger.info(
+            logger.warning(
                 f"usuários no cache de `{channel}`: {self.cache[channel]}"
             )
 
@@ -169,7 +169,7 @@ class TwitchBot(commands.Bot):
     async def sh_so(self, ctx):
         streamer = ctx.message.clean_content.split(' ')[1].lower()
         add_to_session_cache(self.cache, ctx.channel.name, streamer)
-        logger.info(f"Adicionado {streamer} ao cache {ctx.channel.name}")
+        logger.warning(f"Adicionado {streamer} ao cache {ctx.channel.name}")
 
     @commands.command(
         name='greeting',

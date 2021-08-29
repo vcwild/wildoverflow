@@ -7,7 +7,7 @@ class MessageCog(Plugin):
     """Cog for the bot messages"""
 
     async def event_ready(self):
-        print(f"{self.__class__.__name__} is plugged in!")
+        self.logger.warning(f"{self.__class__.__name__} is plugged in!")
 
     @message(name='quarentaedois', aliases=['42', 'quarenta e dois'])
     async def message_42(self, ctx: Context, msg):

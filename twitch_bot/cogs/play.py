@@ -5,7 +5,7 @@ from twitchio.ext import commands
 
 class PlayCog(Plugin):
     async def event_ready(self):
-        print(f"{self.__class__.__name__} is plugged in!")
+        self.logger.warning(f"{self.__class__.__name__} is plugged in!")
 
     @commands.command(name="dice", aliases=['dados', 'dado'])
     async def play_dice(self, ctx):
