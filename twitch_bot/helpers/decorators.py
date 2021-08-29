@@ -26,7 +26,7 @@ def message(name, aliases=None, *args, **kwargs):
         @wraps(func)
         @commands.command(name=name, aliases=aliases, *args, **kwargs)
         async def wrapper(self, ctx):
-            await func(self, ctx, self.messages.commands[name])
+            await func(self, ctx, self.bot.messages.commands[name])
 
         return wrapper
 
