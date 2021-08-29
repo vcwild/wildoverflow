@@ -95,7 +95,6 @@ class MessageCog(Plugin):
     async def message_tip(self, ctx: Context, msg):
         await ctx.send(msg.format(ctx.author.name, ctx.channel.name))
 
-    @message(name='dornelles', aliases=['dornelestv', '3bc'])
-    async def message_dornelles(self, ctx: Context):
-        msg = self.messages.commands['dornelles'].format(ctx.author.name)
+    @message(name='dornelles', aliases=['dornellestv', '3bc'])
+    async def message_dornelles(self, ctx: Context, msg):
         await ctx.send(msg.format(ctx.author.name))
