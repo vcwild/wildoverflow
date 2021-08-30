@@ -8,3 +8,10 @@ class DataParser:
     initial_channels = read_yaml("initial_channels.yml")
     initial_greetings = read_yaml("initial_greetings.yml")
     streamers = read_yaml("streamers.yml")
+
+
+class Messages:
+    def __init__(self):
+        self.greetings = DataParser.greetings
+        self.initial_greetings = DataParser.initial_greetings
+        self.commands = DataParser.commands
