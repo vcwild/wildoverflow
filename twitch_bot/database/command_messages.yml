@@ -1,0 +1,60 @@
+quarentaedois: "/me {}, dá uma olhada nesse link pra conhecer a escola de programação 42SP: https://42sp.org.br"
+
+cafemaker: "/me O Café Maker é um evento do @Kaduzius onde ele entrevista makers mostrando suas invenções, os eventos ocorrem quinzenalmente aos sábados no canal do Kadu: https://www.twitch.tv/kaduzius"
+
+daviprm: "/me 👌😳😳😳😳😳😳👋🤗🤗😎👉 https://www.twitch.tv/daviprm"
+
+default_greeting: "Bom dia chat TehePelo"
+
+dice: "/me {} jogou {}!"
+
+dice_zero: "/me {} jogou {}! Kappa Mas pera aí, existe número 0 em um dado? LUL"
+
+eurotrip: "/me A Euro Trip é um evento do @em1dio onde ele entrevista devs que trabalham na Europa, os papos são geralmente sobre carreira, experiência morando fora e viagens. Para saber mais siga: https://www.twitch.tv/em1dio"
+
+flush_db: "{} limpou a minha memória e eu não consigo mais lembrar com quem eu já interagi! Keepo Keepo"
+
+generic_fail:
+  - "{} foi mal, mas você não pode fazer isso! BibleThump"
+  - "{} mals ai, mas faltou uma espadinha do lado do seu nome Keepo"
+  - "{} puts, esse comando aí é meio complicado eu executar sem vc ser mod Kappa"
+
+github: "/me {}, aqui está meu Github de projetos pessoais: https://github.com/{}"
+
+hub: "/me Fala {}, conhece a HUB?? 😎😎 Somos uma comunidade comprometida em AJUDAR PESSOAS a se desenvolverem através da conexão com criadores de conteúdo de tecnologia. A história está apenas começando e o melhor momento de fazer parte disso é agora. Topa participar desse movimento? 🤗😎👉 http://ahub.tech/discord"
+
+instagram: "/me {}, segue lá no insta e bora trocar uma ideia https://instagram.com/{}"
+
+jeylab: "{} esqueci a frase que define a minha live, mas cola aí: https://www.twitch.tv/jeylab_robotica"
+
+jp_amis: "/me Se quiser conhecer uma stream math.random() * 1000000, segue lá: https://www.twitch.tv/jp_amis"
+
+linkedin: "/me {}, esse é meu perfil no Linkedin: https://linkedin.com/in/{}"
+
+list_commands_fail: "{}, mas e quem falou que eu sou um bot? SeriousSloth"
+
+ping: "{} pong!"
+
+maker: "/me POOOOH NEGO TA DANDO MOLINHO!! KomodoHype  KomodoHype  KomodoHype  A stream em que o maluco te da salve, dando sugada ( KappaPride ) com zoom na cara enquanto as lolly TehePelo dão `oi` PowerUpL OhMyDog PowerUpR , cê não é nem louco de perder isso, corre lá!! TAKE MY LINK GivePLZ https://www.twitch.tv/2lmaker"
+
+tempo: "Salve {}! Infelizmente esse comando só o @XORdroid manja :("
+
+twitter: "/me {}, segue lá no Twitter pra ficar sabendo das últimas novidades: https://twitter.com/{}"
+
+windows: "/me {}, você quis dizer KDE Plasma?"
+
+whatsapp2: "/me cê viu que lançaram o whatsapp 2?? 😳😳😳😳😳😳😳😳😳😳😳😳😳😳 +353 833152259984 (Whats do em1dio)"
+
+dev_caminhante: "/me {}, conheça o projeto criado para os aventureiros no mundo da programação. Seja feliz sendo um eterno aprendiz! 🤗👉 https://t.me/DevCaminhante"
+
+creator: "/me {}, você é um criador de conteúdo, tem interesse em criar conteúdo ou está em busca de apoio para crescer? 😳😳😳😳 Manda um !hub no chat pra conhecer a gente ou para saber mais detalhes acesse 🤗😎👉 https://www.ahub.tech/seja-creator"
+
+shush_success: "Tá bom, vou ficar quieto :("
+
+tip: "{}, gostaria de apoiar a live? <3 Aqui está minha página de doações: https://streamelements.com/{}/tip"
+
+dornelles: "{}, conhece a linguagem de programação do DornellesTv? saca só 😳😳😎👉 https://3bc-lang.org/"
+
+deny_sh: "{} vc não pode receber sh não, aí vira panelinha!! CarlSmile CarlSmile"
+
+list_commands: "{}, Essa é minha documentação oficial: https://bit.ly/38k8RWV"
