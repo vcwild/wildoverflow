@@ -84,6 +84,15 @@ class TwitchBot(commands.Bot):
         msg = choice(self.messages.greetings)
         await channel.send(msg.format(author))
 
+    async def greet_person(self, author, channel: Channel):
+        """Sh's if the user is a streamer,
+        else shows greeting if interactions are active"""
+        if author in self.cache['streamers']:
+            return await self.sh_person(author, channel)
+
+        if self.interactions:
+            await self.say_hello(author, channel)
+
     async def event_ready(self):
         """When the bot is ready to interact with the chat"""
         if self.silent_initial:
@@ -122,28 +131,8 @@ class TwitchBot(commands.Bot):
 
     async def event_join(self, user: User) -> None:
         """Triggers every time a new user joins the chat"""
-        # DEPRECATION: Legacy behaviour will be removed next release
-        # author = user.name
-        # channel = user.channel.name
-        # if author not in self.cache[channel]:
-        #     await self.greet_person(author, user.channel)
-
-        #     self.cache[channel].add(author)
-        #     logger.warning(
-        #         f"usuários no cache de `{channel}`: {self.cache[channel]}"
-        #     )
-
         send_from_cache_to_redis(self.cache, self.db, timedelta(days=2))
         logger.info(f"Usuários no cache geral: {list(self.cache.items())}")
-
-    async def greet_person(self, author, channel: Channel):
-        """Sh's if the user is a streamer,
-        else shows greeting if interactions are active"""
-        if author in self.cache['streamers']:
-            return await self.sh_person(author, channel)
-
-        if self.interactions:
-            await self.say_hello(author, channel)
 
     @commands.command(
         name='interagir',
@@ -174,7 +163,7 @@ class TwitchBot(commands.Bot):
 
     @commands.command(
         name='greeting',
-        aliases=['oi', 'olá', 'fala', 'salve', 'bom', 'boa'],
+        aliases=['oi', 'olá', 'fala', 'salve', 'bom', 'boa', 'alo', 'tudo'],
     )
     async def mock_greeting(self, ctx):
         msg = choice(self.messages.greetings)
