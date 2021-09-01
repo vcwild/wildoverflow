@@ -72,10 +72,10 @@ class TwitchBot(commands.Bot):
 
         self.silent_initial = silent_initial
 
-    async def sh_person(self, author, channel):
+    async def sh_person(self, author, channel: Channel):
         msg = "!sh {}"
 
-        if author == 'vcwild':
+        if author == 'vcwild' or author == channel.name:
             msg = self.messages.commands['deny_sh']
 
         await channel.send(msg.format(author))
@@ -122,18 +122,19 @@ class TwitchBot(commands.Bot):
 
     async def event_join(self, user: User) -> None:
         """Triggers every time a new user joins the chat"""
-        author = user.name
-        channel = user.channel.name
-        if author not in self.cache[channel]:
-            await self.greet_person(author, user.channel)
+        # DEPRECATION: Legacy behaviour will be removed next release
+        # author = user.name
+        # channel = user.channel.name
+        # if author not in self.cache[channel]:
+        #     await self.greet_person(author, user.channel)
 
-            self.cache[channel].add(author)
-            logger.warning(
-                f"usuários no cache de `{channel}`: {self.cache[channel]}"
-            )
+        #     self.cache[channel].add(author)
+        #     logger.warning(
+        #         f"usuários no cache de `{channel}`: {self.cache[channel]}"
+        #     )
 
-            send_from_cache_to_redis(self.cache, self.db, timedelta(days=2))
-            logger.info(f"Usuários no cache geral: {list(self.cache.items())}")
+        send_from_cache_to_redis(self.cache, self.db, timedelta(days=2))
+        logger.info(f"Usuários no cache geral: {list(self.cache.items())}")
 
     async def greet_person(self, author, channel: Channel):
         """Sh's if the user is a streamer,
