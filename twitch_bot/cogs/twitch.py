@@ -163,7 +163,17 @@ class TwitchBot(commands.Bot):
 
     @commands.command(
         name='greeting',
-        aliases=['oi', 'olá', 'fala', 'salve', 'bom', 'boa', 'alo', 'tudo'],
+        aliases=[
+            'oi',
+            'olá',
+            'fala',
+            'salve',
+            'bom',
+            'boa',
+            'alo',
+            'tudo',
+            'roi',
+        ],
     )
     async def mock_greeting(self, ctx: Context) -> None:
         msg = choice(self.messages.greetings)
