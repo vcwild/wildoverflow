@@ -5,7 +5,7 @@ from random import choice
 
 import dotenv
 import redis
-from twitchio.dataclasses import Channel, Message, User
+from twitchio.dataclasses import Channel, Context, Message, User
 from twitchio.ext import commands
 
 from twitch_bot.cogs.data_loader import DataParser, Messages
@@ -25,7 +25,7 @@ dotenv.load_dotenv()
 
 
 class TwitchBot(commands.Bot):
-    def __init__(self, silent_initial=True, interactions=False):
+    def __init__(self, silent_initial: bool = True, interactions: bool = False):
         """Twitch Bot class
 
         Args:
@@ -72,7 +72,7 @@ class TwitchBot(commands.Bot):
 
         self.silent_initial = silent_initial
 
-    async def sh_person(self, author, channel: Channel):
+    async def sh_person(self, author: str, channel: Channel) -> None:
         msg = "!sh {}"
 
         if author == 'vcwild' or author == channel.name:
@@ -80,11 +80,11 @@ class TwitchBot(commands.Bot):
 
         await channel.send(msg.format(author))
 
-    async def say_hello(self, author, channel):
+    async def say_hello(self, author: str, channel: Channel) -> None:
         msg = choice(self.messages.greetings)
         await channel.send(msg.format(author))
 
-    async def greet_person(self, author, channel: Channel):
+    async def greet_person(self, author: str, channel: Channel) -> None:
         """Sh's if the user is a streamer,
         else shows greeting if interactions are active"""
         if author in self.cache['streamers']:
@@ -93,7 +93,7 @@ class TwitchBot(commands.Bot):
         if self.interactions:
             await self.say_hello(author, channel)
 
-    async def event_ready(self):
+    async def event_ready(self) -> None:
         """When the bot is ready to interact with the chat"""
         if self.silent_initial:
             for channel in self.channels:
@@ -110,7 +110,7 @@ class TwitchBot(commands.Bot):
 
         logger.info(f'{self.nick} is ready!')
 
-    async def event_message(self, message: Message):
+    async def event_message(self, message: Message) -> None:
         """Triggers every time the bot receives a new message"""
         author = message.author.name
         channel = message.channel.name
@@ -138,14 +138,14 @@ class TwitchBot(commands.Bot):
         name='interagir',
         aliases=['falar', 'desmutar', 'ativar', 'ativo', 'activate', 'active'],
     )
-    async def interact(self, ctx):
+    async def interact(self, ctx: Context) -> None:
         if ctx.author.is_mod:
             self.interactions = True
             return await ctx.send("Opa! Saindo do lurk! Kappa")
         await ctx.send("Foi mal, mas você não pode fazer isso BibleThump")
 
     @commands.command(name='shh')
-    async def shush(self, ctx):
+    async def shush(self, ctx: Context) -> None:
         if ctx.author.is_mod:
             self.interactions = False
             return await ctx.send(self.messages.commands['shush_success'])
@@ -156,7 +156,7 @@ class TwitchBot(commands.Bot):
         )
 
     @commands.command(name='sh', aliases=['sh-so'])
-    async def sh_so(self, ctx):
+    async def sh_so(self, ctx: Context) -> None:
         streamer = ctx.message.clean_content.split(' ')[1].lower()
         add_to_session_cache(self.cache, ctx.channel.name, streamer)
         logger.warning(f"Adicionado {streamer} ao cache {ctx.channel.name}")
@@ -165,6 +165,6 @@ class TwitchBot(commands.Bot):
         name='greeting',
         aliases=['oi', 'olá', 'fala', 'salve', 'bom', 'boa', 'alo', 'tudo'],
     )
-    async def mock_greeting(self, ctx):
+    async def mock_greeting(self, ctx: Context) -> None:
         msg = choice(self.messages.greetings)
         await ctx.send(msg.format(ctx.author.name))
