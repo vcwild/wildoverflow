@@ -6,11 +6,11 @@ from twitchio.ext import commands
 class ManagementCog(Plugin):
     """Cog for managing the bot"""
 
-    async def event_ready(self):
+    async def event_ready(self) -> None:
         self.logger.warning(f"{self.__class__.__name__} is plugged in!")
 
     @commands.command(name='flush_db', aliases=['flush', 'limpar', 'clean'])
-    async def flush_database(self, ctx: Context):
+    async def flush_database(self, ctx: Context) -> None:
         author = ctx.author.name
 
         channel = ctx.channel.name
