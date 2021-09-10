@@ -3,6 +3,7 @@
 ## Table of contents
 
 - [42](#42)
+- [Add streamer](#add-streamer)
 - [Cafemaker](#cafemaker)
 - [Daviprm](#daviprm)
 - [Dice/Dados](#dice)
@@ -28,6 +29,10 @@ These are the list of commands available in the wildOverflow chatbot, use them c
 ### 42
 
 It shows the École 42 message on screen.
+
+### Add streamer
+
+It adds the following streamer to the bot shoutout list
 
 ### Cafemaker
 
