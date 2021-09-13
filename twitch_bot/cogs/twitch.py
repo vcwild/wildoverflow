@@ -178,3 +178,31 @@ class TwitchBot(commands.Bot):
     async def mock_greeting(self, ctx: Context) -> None:
         msg = choice(self.messages.greetings)
         await ctx.send(msg.format(ctx.author.name))
+
+    @commands.command(
+        name='add', aliases=['streamer', 'adicionar', 'add-streamer']
+    )
+    async def add_streamer(self, ctx: Context) -> None:
+        streamer = ctx.message.clean_content.split(' ')[1].lower()
+
+        if streamer in self.cache['streamers']:
+            return await ctx.send(
+                "{}, esse streamer já tava na lista! NotLikeThis".format(
+                    ctx.author.name
+                )
+            )
+
+        if ctx.author.is_mod:
+            add_to_session_cache(self.cache, key='streamers', value=streamer)
+            logger.warning(f"Adicionado {streamer} à lista de streamers")
+            return await ctx.send(
+                "Adicionei {} para a lista de streamers que eu mando sh! ;)".format(
+                    streamer
+                )
+            )
+
+        await ctx.send(
+            choice(self.messages.commands['generic_fail']).format(
+                ctx.author.name
+            )
+        )
