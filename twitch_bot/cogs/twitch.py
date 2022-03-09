@@ -42,14 +42,14 @@ class TwitchBot(commands.Bot):
         streamers = DataParser.streamers
 
         db = redis.Redis(
-            host=os.environ['DATABASE_HOST'], db=0, socket_timeout=5
+            host=os.environ["DATABASE_HOST"], db=0, socket_timeout=5
         )
 
         super().__init__(
-            irc_token=os.environ['OAUTH_TOKEN'],
-            client_id=os.environ['CLIENT_ID'],
-            nick=os.environ['BOT_USERNAME'],
-            prefix=['!', '@wildOverflow ', '@wildoverflow '],
+            irc_token=os.environ["OAUTH_TOKEN"],
+            client_id=os.environ["CLIENT_ID"],
+            nick=os.environ["BOT_USERNAME"],
+            prefix=["!", "@wildOverflow ", "@wildoverflow "],
             initial_channels=channels,
         )
 
@@ -75,8 +75,8 @@ class TwitchBot(commands.Bot):
     async def sh_person(self, author: str, channel: Channel) -> None:
         msg = "!sh {}"
 
-        if author == 'vcwild' or author == channel.name:
-            msg = self.messages.commands['deny_sh']
+        if author == channel.name:
+            msg = self.messages.commands["deny_sh"]
 
         await channel.send(msg.format(author))
 
@@ -87,7 +87,7 @@ class TwitchBot(commands.Bot):
     async def greet_person(self, author: str, channel: Channel) -> None:
         """Sh's if the user is a streamer,
         else shows greeting if interactions are active"""
-        if author in self.cache['streamers']:
+        if author in self.cache["streamers"]:
             return await self.sh_person(author, channel)
 
         if self.interactions:
@@ -108,7 +108,7 @@ class TwitchBot(commands.Bot):
             msg = choice(self.messages.initial_greetings)
             await self.get_channel(channel).send(msg)
 
-        logger.info(f'{self.nick} is ready!')
+        logger.info(f"{self.nick} is ready!")
 
     async def event_message(self, message: Message) -> None:
         """Triggers every time the bot receives a new message"""
@@ -135,8 +135,8 @@ class TwitchBot(commands.Bot):
         logger.info(f"Usuários no cache geral: {list(self.cache.items())}")
 
     @commands.command(
-        name='interagir',
-        aliases=['falar', 'desmutar', 'ativar', 'ativo', 'activate', 'active'],
+        name="interagir",
+        aliases=["falar", "desmutar", "ativar", "ativo", "activate", "active"],
     )
     async def interact(self, ctx: Context) -> None:
         if ctx.author.is_mod:
@@ -144,35 +144,35 @@ class TwitchBot(commands.Bot):
             return await ctx.send("Opa! Saindo do lurk! Kappa")
         await ctx.send("Foi mal, mas você não pode fazer isso BibleThump")
 
-    @commands.command(name='shh')
+    @commands.command(name="shh")
     async def shush(self, ctx: Context) -> None:
         if ctx.author.is_mod:
             self.interactions = False
-            return await ctx.send(self.messages.commands['shush_success'])
+            return await ctx.send(self.messages.commands["shush_success"])
         await ctx.send(
-            choice(self.messages.commands['generic_fail']).format(
+            choice(self.messages.commands["generic_fail"]).format(
                 ctx.author.name
             )
         )
 
-    @commands.command(name='sh', aliases=['sh-so'])
+    @commands.command(name="sh", aliases=["sh-so"])
     async def sh_so(self, ctx: Context) -> None:
-        streamer = ctx.message.clean_content.split(' ')[1].lower()
+        streamer = ctx.message.clean_content.split(" ")[1].lower()
         add_to_session_cache(self.cache, ctx.channel.name, streamer)
         logger.warning(f"Adicionado {streamer} ao cache {ctx.channel.name}")
 
     @commands.command(
-        name='greeting',
+        name="greeting",
         aliases=[
-            'oi',
-            'olá',
-            'fala',
-            'salve',
-            'bom',
-            'boa',
-            'alo',
-            'tudo',
-            'roi',
+            "oi",
+            "olá",
+            "fala",
+            "salve",
+            "bom",
+            "boa",
+            "alo",
+            "tudo",
+            "roi",
         ],
     )
     async def mock_greeting(self, ctx: Context) -> None:
@@ -180,12 +180,12 @@ class TwitchBot(commands.Bot):
         await ctx.send(msg.format(ctx.author.name))
 
     @commands.command(
-        name='add', aliases=['streamer', 'adicionar', 'add-streamer']
+        name="add", aliases=["streamer", "adicionar", "add-streamer"]
     )
     async def add_streamer(self, ctx: Context) -> None:
-        streamer = ctx.message.clean_content.split(' ')[1].lower()
+        streamer = ctx.message.clean_content.split(" ")[1].lower()
 
-        if streamer in self.cache['streamers']:
+        if streamer in self.cache["streamers"]:
             return await ctx.send(
                 "{}, esse streamer já tava na lista! NotLikeThis".format(
                     ctx.author.name
@@ -193,7 +193,7 @@ class TwitchBot(commands.Bot):
             )
 
         if ctx.author.is_mod:
-            add_to_session_cache(self.cache, key='streamers', value=streamer)
+            add_to_session_cache(self.cache, key="streamers", value=streamer)
             logger.warning(f"Adicionado {streamer} à lista de streamers")
             return await ctx.send(
                 "Adicionei {} para a lista de streamers que eu mando sh! ;)".format(
@@ -202,7 +202,7 @@ class TwitchBot(commands.Bot):
             )
 
         await ctx.send(
-            choice(self.messages.commands['generic_fail']).format(
+            choice(self.messages.commands["generic_fail"]).format(
                 ctx.author.name
             )
         )
