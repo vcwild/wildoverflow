@@ -36,6 +36,14 @@ class MessageCog(Plugin):
     async def message_instagram(self, ctx: Context, msg: str) -> None:
         await ctx.send(msg.format(ctx.author.name, ctx.channel.name))
 
+    @message(name="feministech", aliases=["feminis_tech"])
+    async def message_feministech(self, ctx: Context, msg: str) -> None:
+        await ctx.send(msg.format(ctx.author.name))
+
+    @message(name="collabcode", aliases=["collab"])
+    async def message_collab(self, ctx: Context, msg: str) -> None:
+        await ctx.send(msg.format(ctx.author.name))
+
     @message(name="tempo")
     async def message_tempo(self, ctx: Context, msg: str) -> None:
         if ctx.channel.name != "kaduzius":
