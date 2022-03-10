@@ -10,12 +10,19 @@ services:
     networks:
       - database
     restart: always
+    volumes:
+      - redis:/bitnami/redis
   wild-overflow:
-    image: vcwild/wildoverflow:0.4.4
+    image: vcwild/wildoverflow:0.4.5
+    container_name: wildoverflow
     networks:
       - database
     env_file: .env
     restart: always
+
+volumes:
+  redis:
+    driver: local
 
 networks:
   database:

@@ -7,7 +7,7 @@ def read_yaml(file: str):
 
     directory = str(ROOT_DIR) + "/database/"
 
-    with open(directory + file, 'r') as file:
+    with open(directory + file, "r") as file:
         stream = file.read()
         data = yaml.load(stream, Loader=yaml.FullLoader)
 

@@ -9,7 +9,7 @@ def spawn_cache(channels: list, users: str, streamers: str, database):
         for channel in channels:
             cache[channel] = set(users)
 
-        cache['streamers'] = set(streamers)
+        cache["streamers"] = set(streamers)
 
         send_from_redis_to_cache(cache, database)
 
