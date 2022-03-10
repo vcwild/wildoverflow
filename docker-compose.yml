@@ -13,7 +13,7 @@ services:
     volumes:
       - redis:/bitnami/redis
   wild-overflow:
-    image: vcwild/wildoverflow:0.4.5
+    image: vcwild/wildoverflow:0.5.0
     container_name: wildoverflow
     networks:
       - database

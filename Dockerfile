@@ -6,4 +6,4 @@ ADD . ./app
 
 RUN pip install -r ./app/requirements.txt
 
-CMD [ "python", "./app/bot.py" ]
+CMD [ "python", "./app/bot.py", "run"]
