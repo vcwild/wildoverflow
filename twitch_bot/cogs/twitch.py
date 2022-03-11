@@ -73,10 +73,7 @@ class TwitchBot(commands.Bot):
         self.silent_initial = silent_initial
 
     async def sh_person(self, author: str, channel: Channel) -> None:
-        msg = "!sh {}"
-
-        if author == channel.name:
-            msg = self.messages.commands["deny_sh"]
+        msg = "!sh {0} " + choice(self.messages.commands["shoutout"])
 
         await channel.send(msg.format(author))
 
