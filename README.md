@@ -71,7 +71,7 @@ poetry run bot.py
 
 ### How to use
 
-Main commands are [listed here](https://ahub-tech.github.io/twitch-bot-wildoverflow/docs/commands)
+Main commands are [listed here](https://vcwild.github.io/twitch-bot-wildoverflow/docs/commands)
 
 ## Integrations
 
